@@ -1,139 +1,147 @@
 <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
- <div class="container">
- <a class="navbar-brand" href="#">Auto Trader</a>
- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
- <span class="navbar-toggler-icon"></span>
- </button>
- <div class="collapse navbar-collapse" id="navbarCollapse">
-   <ul class="navbar-nav mr-auto">
-     <li class="nav-item active">
-     <a class="nav-link" href="#">Nifty
-     <span class="sr-only">(current)</span>
-     </a>
-     </li>
-     <li class="nav-item">
-     <a class="nav-link" href="#">Bank Nifty</a>
-     </li>
-     <li>
-     <a class="nav-link" href="#"></a>
-     </li>
-   </ul>
- </div>
- </div>
+  <div class="container">
+    <a class="navbar-brand" href="#">Auto Trader</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/']" [queryParams]="{index:'Nifty'}">Nifty</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/']" [queryParams]="{index:'BankNifty'}">Bank Nifty</a>
+        </li>
+        <li>
+          <a class="nav-link" href="#"></a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
 
+<button mat-button color="primary" class="margin50" (click)="createResultSet()">Fetch Data Manually</button>
+
 <div class="container jumbotron white-bg">
-    <div class="row">
-        <div class="col-xs-4 col-md-4 col-sm-4">
-          <p class="lead inline-block">INDEX NAME</p>
-          <h1 class="display-2 inline-block">Nifty</h1>
-        </div>
-        <div class="col-xs-4 col-md-4 col-sm-4 display-2">
-          <p class="lead inline-block">INDEX VALUE</p>
-          <h1 class="display-2 inline-block">{{underlyingValue}}</h1>
-        </div>
-        <div class="col-xs-4 col-md-4 col-sm-4 lead">
-          <p class="lead inline-block">TIMESTAMP</p>
-          <h1 class="display-2 inline-block">{{timestamp}}</h1>
-        </div>
+  <div class="row">
+    <div class="col-xs-4 col-md-4 col-sm-4">
+      <p class="lead inline-block">INDEX NAME</p>
+      <h1 class="display-2 inline-block">{{constantData.symbol}}</h1>
     </div>
+    <div class="col-xs-4 col-md-4 col-sm-4 display-2">
+      <p class="lead inline-block">INDEX VALUE</p>
+      <h1 class="display-2 inline-block">{{underlyingValue}}</h1>
+    </div>
+    <div class="col-xs-4 col-md-4 col-sm-4 lead">
+      <p class="lead inline-block">TIMESTAMP</p>
+      <h1 class="display-2 inline-block">{{timestamp}}</h1>
+    </div>
+  </div>
 </div>
 
 
 <div class="white-bg">
-    <div class="row">
-        <div class="col-xs-6 col-md-6 col-sm-6">
-          <h1 class="display-2 inline-block">CALL</h1>
-            <table mat-table [dataSource]="callData" class="mat-elevation-z8">
-              <!-- Position Column -->
-              <ng-container matColumnDef="strikePrice">
-                <th mat-header-cell *matHeaderCellDef> Strike Price </th>
-                <td mat-cell *matCellDef="let element"> {{element.strikePrice}} </td>
-              </ng-container>
+  <div class="row">
+    <div class="col-xs-6 col-md-6 col-sm-6">
+      <h1 class="display-2 inline-block">CALL</h1>
+      <table mat-table [dataSource]="callData" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="strikePrice">
+          <th mat-header-cell *matHeaderCellDef> Strike Price </th>
+          <td mat-cell *matCellDef="let element"> {{element.strikePrice}} </td>
+        </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="openInterest">
-                <th mat-header-cell *matHeaderCellDef> Open Interest </th>
-                <td mat-cell *matCellDef="let element"> {{element.openInterest}} </td>
-              </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="openInterest">
+          <th mat-header-cell *matHeaderCellDef> Open Interest </th>
+          <td mat-cell *matCellDef="let element"> {{element.openInterest}} </td>
+        </ng-container>
 
-              <!-- Weight Column -->
-              <ng-container matColumnDef="changeinOpenInterest">
-                <th mat-header-cell *matHeaderCellDef> Change Open Interest </th>
-                <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterest}} </td>
-              </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="changeinOpenInterest">
+          <th mat-header-cell *matHeaderCellDef> Change Open Interest </th>
+          <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterest}} </td>
+        </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;let element" [ngClass]="{ 'highlight': element.ATM === true }"></tr>
-            </table>
-        </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;let element" [ngClass]="{ 'highlight': element.ATM === true }"></tr>
+      </table>
+    </div>
 
-        <div class="col-xs-6 col-md-6 col-sm-6">
-        <h1 class="display-2 inline-block">PUT</h1>
-        <table mat-table [dataSource]="putData" class="mat-elevation-z8">
-          <!-- Position Column -->
-          <ng-container matColumnDef="strikePrice">
-            <th mat-header-cell *matHeaderCellDef> Strike Price </th>
-            <td mat-cell *matCellDef="let element"> {{element.strikePrice}} </td>
-          </ng-container>
+    <div class="col-xs-6 col-md-6 col-sm-6">
+      <h1 class="display-2 inline-block">PUT</h1>
+      <table mat-table [dataSource]="putData" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="strikePrice">
+          <th mat-header-cell *matHeaderCellDef> Strike Price </th>
+          <td mat-cell *matCellDef="let element"> {{element.strikePrice}} </td>
+        </ng-container>
 
-          <!-- Name Column -->
-          <ng-container matColumnDef="openInterest">
-            <th mat-header-cell *matHeaderCellDef> Open Interest </th>
-            <td mat-cell *matCellDef="let element"> {{element.openInterest}} </td>
-          </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="openInterest">
+          <th mat-header-cell *matHeaderCellDef> Open Interest </th>
+          <td mat-cell *matCellDef="let element"> {{element.openInterest}} </td>
+        </ng-container>
 
-          <!-- Weight Column -->
-          <ng-container matColumnDef="changeinOpenInterest">
-            <th mat-header-cell *matHeaderCellDef> Change Open Interest </th>
-            <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterest}} </td>
-          </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="changeinOpenInterest">
+          <th mat-header-cell *matHeaderCellDef> Change Open Interest </th>
+          <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterest}} </td>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns;let element" [ngClass]="{ 'highlight': element.ATM === true }"></tr>
-        </table>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;let element" [ngClass]="{ 'highlight': element.ATM === true }"></tr>
+      </table>
     </div>
   </div>
 </div>
 
 <div class="white-bg margin50">
-    <div class="row">
-        <div class="col-xs-12 col-md-12 col-sm-12">
-          <h1 class="display-2 inline-block">INTRADAY TABLE</h1>
-            <table mat-table [dataSource]="intradayTable" class="mat-elevation-z8">
-              <!-- Position Column -->
-              <ng-container matColumnDef="timestamp">
-                <th mat-header-cell *matHeaderCellDef> Time Stamp </th>
-                <td mat-cell *matCellDef="let element"> {{element.timestamp}} </td>
-              </ng-container>
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <h1 class="display-2 inline-block">INTRADAY TABLE</h1>
+      <table mat-table [dataSource]="intradayTable" class="mat-elevation-z8">
+        <!-- Position Column -->
+        <ng-container matColumnDef="timestamp">
+          <th mat-header-cell *matHeaderCellDef> Time Stamp </th>
+          <td mat-cell *matCellDef="let element"> {{element.timestamp}} </td>
+        </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="coiCall">
-                <th mat-header-cell *matHeaderCellDef> COI Call </th>
-                <td mat-cell *matCellDef="let element"> {{element.coiCall}} </td>
-              </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="coiCall">
+          <th mat-header-cell *matHeaderCellDef> COI Call </th>
+          <td mat-cell *matCellDef="let element"> {{element.coiCall}} </td>
+        </ng-container>
 
-              <!-- Weight Column -->
-              <ng-container matColumnDef="coiPut">
-                <th mat-header-cell *matHeaderCellDef> COI Put </th>
-                <td mat-cell *matCellDef="let element"> {{element.coiPut}} </td>
-              </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="coiPut">
+          <th mat-header-cell *matHeaderCellDef> COI Put </th>
+          <td mat-cell *matCellDef="let element"> {{element.coiPut}} </td>
+        </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="coiDiff">
-                <th mat-header-cell *matHeaderCellDef> COI Difference </th>
-                <td mat-cell *matCellDef="let element"> {{element.coiDiff}} </td>
-              </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="coiDiff">
+          <th mat-header-cell *matHeaderCellDef> COI Difference </th>
+          <td mat-cell *matCellDef="let element"> {{element.coiDiff}} </td>
+        </ng-container>
 
-              <!-- Weight Column -->
-              <ng-container matColumnDef="optionSignal">
-                <th mat-header-cell *matHeaderCellDef> Option Signal </th>
-                <td mat-cell *matCellDef="let element" [ngClass]="{'red': element.optionSignal === 'Sell', 'green': element.optionSignal === 'Buy'}"> {{element.optionSignal}} </td>
-              </ng-container>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="optionSignal">
+          <th mat-header-cell *matHeaderCellDef> Option Signal </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="{'red': element.optionSignal === 'Sell', 'green': element.optionSignal === 'Buy'}"> {{element.optionSignal}} </td>
+        </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumnsFinal"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumnsFinal;"></tr>
-            </table>
-        </div>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsFinal"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsFinal;"></tr>
+      </table>
+    </div>
   </div>
+</div>
+
+<div class="white-bg margin50">
+  <div [chart]="chart"></div>
+</div>
+
+<div class="white-bg margin50 pos-abs">
+  <img src="../assets/images/OIinterpret.png" class="img-fluid align-center" alt="How to interpret OI">
 </div>

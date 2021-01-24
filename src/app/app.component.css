@@ -27,3 +27,13 @@ table {
   background: green;
   padding-left: 5px;
 }
+
+.pos-abs {
+  width: 100%;
+}
+
+.align-center {
+  margin-left: auto;
+  display: block;
+  margin-right: auto;
+}
