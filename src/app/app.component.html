@@ -4,41 +4,44 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" [routerLink]="['/']" [queryParams]="{index:'Nifty'}">Nifty</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/']" [queryParams]="{index:'BankNifty'}">Bank Nifty</a>
-        </li>
-        <li>
-          <a class="nav-link" href="#"></a>
-        </li>
-      </ul>
-    </div>
   </div>
 </nav>
 
-<button mat-button color="primary" class="margin50" (click)="createResultSet()">Fetch Data Manually</button>
+<div class="white-bg container marginT50">
+  <div class="input-group">
+    <div class="col-xs-3 col-md-3 col-sm-3">
+    <mat-form-field appearance="fill" class="mat-form form-control">
+      <mat-label>Select an option</mat-label>
+      <mat-select (selectionChange)="onSelectionChange($event.value)" [value]="selectedStock" panelClass="mat-form">
+        <mat-option *ngFor="let shareDetail of shareDetails" [value]="shareDetail.symbol">{{shareDetail.text}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-<div class="container jumbotron white-bg">
-  <div class="row">
-    <div class="col-xs-4 col-md-4 col-sm-4">
-      <p class="lead inline-block">INDEX NAME</p>
-      <h1 class="display-2 inline-block">{{constantData.symbol}}</h1>
-    </div>
-    <div class="col-xs-4 col-md-4 col-sm-4 display-2">
-      <p class="lead inline-block">INDEX VALUE</p>
-      <h1 class="display-2 inline-block">{{underlyingValue}}</h1>
-    </div>
-    <div class="col-xs-4 col-md-4 col-sm-4 lead">
-      <p class="lead inline-block">TIMESTAMP</p>
-      <h1 class="display-2 inline-block">{{timestamp}}</h1>
-    </div>
+    <button mat-raised-button class="input-group-btn" (click)="createResultSet()">Fetch Data Manually</button>
   </div>
 </div>
 
+<div class="container jumbotron white-bg">
+  <div class="row">
+    <div class="col-xs-3 col-md-3 col-sm-3">
+      <p class="lead inline-block">INDEX NAME</p>
+      <h1 class="display-2 inline-block">{{selectedStockObj.symbol}}</h1>
+    </div>
+    <div class="col-xs-3 col-md-3 col-sm-3 display-2">
+      <p class="lead inline-block">INDEX VALUE</p>
+      <h1 class="display-2 inline-block">{{underlyingValue}}</h1>
+    </div>
+    <div class="col-xs-3 col-md-3 col-sm-3 lead">
+      <p class="lead inline-block">TIMESTAMP</p>
+      <h1 class="display-2 inline-block">{{timestamp}}</h1>
+    </div>
+    <div class="col-xs-3 col-md-3 col-sm-3 lead">
+      <p class="lead inline-block">PCR</p>
+      <h1 class="display-2 inline-block">{{pcr}}</h1>
+    </div>
+  </div>
+</div>
 
 <div class="white-bg">
   <div class="row">

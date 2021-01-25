@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Subject, interval } from 'rxjs';
 import { filter } from 'lodash';
 import { Chart } from 'angular-highcharts';
-import { ActivatedRoute} from '@angular/router';
+import { SHAREDETAILS } from '../assets/constant';
 
 @Component({
   selector: 'app-root',
@@ -20,30 +20,15 @@ export class AppComponent implements OnInit {
   public displayedColumns: string[] = ['strikePrice', 'openInterest', 'changeinOpenInterest'];
   public displayedColumnsFinal: string[] = ['timestamp', 'coiCall', 'coiPut', 'coiDiff', 'optionSignal'];
   public chart: any;
+  public pcr: number = 0;
+  public shareDetails: any = SHAREDETAILS;
+  public selectedStock: string = this.shareDetails[0].symbol;
+  public selectedStockObj: any = this.shareDetails[0];
 
-  constructor(private http: HttpClient, private _cdr: ChangeDetectorRef, private routes: ActivatedRoute) {
+  constructor(private http: HttpClient, private _cdr: ChangeDetectorRef) {
   }
 
-  public constantData: any = {
-    'strikeDifference' : 50,
-    'noOfPutOI': 250,
-    'noOfCallOI': 200,
-    'symbol': 'NIFTY'
-  };
-
   ngOnInit() {
-    this.routes.queryParams.subscribe(params => {
-      console.log(params);
-     if(params.index === 'BankNifty') {
-       this.constantData = {
-         'strikeDifference' : 100,
-         'noOfPutOI': 1000,
-         'noOfCallOI': 900,
-         'symbol': 'BANKNIFTY'
-       }
-     }
-    });
-
     this.chart = new Chart({
       chart: {
         type: 'line'
@@ -81,11 +66,13 @@ export class AppComponent implements OnInit {
       this.callData = [];
       let coiCall = 0;
       let coiPut = 0;
+      let oiCall = 0;
+      let oiPut = 0;
       this.timestamp = res.records.timestamp;
       this.underlyingValue = res.records.underlyingValue;
-      this.ATMdata = Math.round(Number(this.underlyingValue) / this.constantData.strikeDifference) * this.constantData.strikeDifference;
+      this.ATMdata = Math.round(Number(this.underlyingValue) / this.selectedStockObj.strikeDifference) * this.selectedStockObj.strikeDifference;
       res.filtered.data.map((result: any) => {
-        if ((Number(this.underlyingValue) - this.constantData.noOfPutOI) <= Number(result.strikePrice) && Number(result.strikePrice) <= (Number(this.underlyingValue) + this.constantData.noOfCallOI)) {
+        if ((Number(this.underlyingValue) - this.selectedStockObj.noOfPutOI) <= Number(result.strikePrice) && Number(result.strikePrice) <= (Number(this.underlyingValue) + this.selectedStockObj.noOfCallOI)) {
           if (Number(this.ATMdata) === Number(result.strikePrice)) {
             result['PE']['ATM'] = true;
             result['CE']['ATM'] = true;
@@ -94,8 +81,12 @@ export class AppComponent implements OnInit {
           this.callData.push(result['CE']);
           coiPut += result['PE'].changeinOpenInterest;
           coiCall += result['CE'].changeinOpenInterest;
+          oiPut += result['PE'].openInterest;
+          oiCall += result['CE'].openInterest;
         }
-      })
+      });
+
+      this.pcr = Number((Number(oiPut)/Number(oiCall)).toFixed(2));
 
       this.intradayTable = [{
         'timestamp': this.timestamp.split(' ')[1],
@@ -121,6 +112,14 @@ export class AppComponent implements OnInit {
       'Access-Control-Allow-Origin': '*'
     });
 
-    return this.http.get(`/api/option-chain-indices?symbol=${this.constantData.symbol}`, { headers: headers });
+    return this.http.get(`/api/option-chain-indices?symbol=${this.selectedStockObj.symbol}`, { headers: headers });
+  }
+
+  onSelectionChange(event: any) {
+    this.selectedStock = event;
+    this.selectedStockObj = this.shareDetails.find((detail: any) => {
+        return detail.symbol === event;
+    }) || this.shareDetails[0];
+    this.createResultSet();
   }
 }

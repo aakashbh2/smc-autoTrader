@@ -37,3 +37,15 @@ table {
   display: block;
   margin-right: auto;
 }
+
+.marginT50 {
+  margin-top: 50px;
+}
+
+.mat-form {
+  background: #424242;
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+  background: #424242 !important;
+}
