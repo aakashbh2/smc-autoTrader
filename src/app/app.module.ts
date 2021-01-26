@@ -11,7 +11,8 @@ import {MatSelectModule} from '@angular/material/select';
 
 import {MatButtonModule} from '@angular/material/button';
 import { ChartModule } from 'angular-highcharts';
-
+import {MatInputModule} from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent
@@ -24,7 +25,9 @@ import { ChartModule } from 'angular-highcharts';
     BrowserAnimationsModule,
     ChartModule,
     MatSelectModule,
-    MatButtonModule
+    MatButtonModule,
+    MatInputModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

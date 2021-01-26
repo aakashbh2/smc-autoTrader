@@ -46,6 +46,11 @@ table {
   background: #424242;
 }
 
+.backgroundPadding {
+  background: #424242;
+  padding: 10px;
+}
+
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
   background: #424242 !important;
 }

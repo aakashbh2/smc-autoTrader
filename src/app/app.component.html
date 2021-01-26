@@ -18,7 +18,17 @@
     </mat-form-field>
   </div>
 
-    <button mat-raised-button class="input-group-btn" (click)="createResultSet()">Fetch Data Manually</button>
+    <div class="col-xs-3 col-md-3 col-sm-3">
+      <button mat-raised-button class="input-group-btn" (click)="createResultSet()">Fetch Data Manually</button>
+    </div>
+
+    <div class="col-xs-3 col-md-3 col-sm-3">
+      <mat-form-field class="backgroundPadding">
+        <mat-label>Cookie</mat-label>
+        <input matInput placeholder="Cookie" [(ngModel)]="userInputCookie">
+      </mat-form-field>
+    </div>
+
   </div>
 </div>
 
@@ -126,6 +136,11 @@
         <ng-container matColumnDef="coiDiff">
           <th mat-header-cell *matHeaderCellDef> COI Difference </th>
           <td mat-cell *matCellDef="let element"> {{element.coiDiff}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="multiplier">
+          <th mat-header-cell *matHeaderCellDef> Multiplier </th>
+          <td mat-cell *matCellDef="let element"> {{element.multiplier}} </td>
         </ng-container>
 
         <!-- Weight Column -->
