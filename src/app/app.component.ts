@@ -121,7 +121,7 @@ export class AppComponent implements OnInit {
       'Access-Control-Allow-Origin': '*'
     });
 
-    return this.http.get(`/api/option-chain-indices?symbol=${this.selectedStockObj.symbol}`, { headers: headers });
+    return this.http.get(`https://www.nseindia.com/api/option-chain-indices?symbol=${this.selectedStockObj.symbol}`, { headers: headers });
   }
 
   onSelectionChange(event: any) {
