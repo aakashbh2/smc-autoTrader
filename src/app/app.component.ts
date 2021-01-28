@@ -121,10 +121,11 @@ export class AppComponent implements OnInit {
       'Access-Control-Allow-Origin': '*'
     });
 
-    return this.http.get(`https://www.nseindia.com/api/option-chain-indices?symbol=${this.selectedStockObj.symbol}`, { headers: headers });
+    return this.http.get(`/api/option-chain-indices?symbol=${this.selectedStockObj.symbol}`, { headers: headers });
   }
 
   onSelectionChange(event: any) {
+    localStorage.setItem(this.selectedStock, JSON.stringify(this.intradayTable));
     this.selectedStock = event;
     this.selectedStockObj = this.shareDetails.find((detail: any) => {
         return detail.symbol === event;
@@ -132,6 +133,13 @@ export class AppComponent implements OnInit {
     this.chart.removeSeries(0);
     this.chart.removeSeries(1);
     this.chart.removeSeries(2);
+    this.intradayTable = [];
+    this.intradayTable = [...JSON.parse(localStorage.getItem(this.selectedStock) || "[]")];
+    this.intradayTable.forEach((item: any) => {
+      this.chart.addPoint(item.coiCall, 0);
+      this.chart.addPoint(item.coiPut, 1);
+      this.chart.addPoint(Number(item.coiCall - item.coiPut), 2);
+    });
     this.createResultSet();
   }
 }
