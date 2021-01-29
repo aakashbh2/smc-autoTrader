@@ -11,13 +11,12 @@ import { SHAREDETAILS } from '../assets/constant';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public putData: Array<any> = [];
-  public callData: Array<any> = [];
+  public dataSet: Array<any> = [];
   public timestamp = '';
   public underlyingValue = '';
   public ATMdata: any;
   public intradayTable: Array<any> = [];
-  public displayedColumns: string[] = ['strikePrice', 'openInterest', 'changeinOpenInterest'];
+  public displayedColumns: string[] = ['openInterestCall', 'changeinOpenInterestCall', 'strikePrice',  'changeinOpenInterestPut', 'openInterestPut'];
   public displayedColumnsFinal: string[] = ['timestamp', 'coiCall', 'coiPut', 'coiDiff', 'optionSignal', 'multiplier'];
   public chart: any;
   public pcr: number = 0;
@@ -69,8 +68,7 @@ export class AppComponent implements OnInit {
 
   createResultSet() {
     this.fetchData().subscribe((res: any) => {
-      this.putData = [];
-      this.callData = [];
+      this.dataSet = [];
       let coiCall = 0;
       let coiPut = 0;
       let oiCall = 0;
@@ -80,12 +78,17 @@ export class AppComponent implements OnInit {
       this.ATMdata = Math.round(Number(this.underlyingValue) / this.selectedStockObj.strikeDifference) * this.selectedStockObj.strikeDifference;
       res.filtered.data.map((result: any) => {
         if ((Number(this.underlyingValue) - this.selectedStockObj.noOfPutOI) <= Number(result.strikePrice) && Number(result.strikePrice) <= (Number(this.underlyingValue) + this.selectedStockObj.noOfCallOI)) {
+          let item: any = {
+            'openInterestCall': result['CE'].openInterest,
+            'openInterestPut': result['PE'].openInterest,
+            'strikePrice': result.strikePrice,
+            'changeinOpenInterestPut': result['PE'].changeinOpenInterest,
+            'changeinOpenInterestCall': result['CE'].changeinOpenInterest
+          };
           if (Number(this.ATMdata) === Number(result.strikePrice)) {
-            result['PE']['ATM'] = true;
-            result['CE']['ATM'] = true;
+            item['ATM'] = true;
           }
-          this.putData.push(result['PE']);
-          this.callData.push(result['CE']);
+          this.dataSet.push(item);
           coiPut += result['PE'].changeinOpenInterest;
           coiCall += result['CE'].changeinOpenInterest;
           oiPut += result['PE'].openInterest;

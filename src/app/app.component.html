@@ -55,51 +55,37 @@
 
 <div class="white-bg">
   <div class="row">
-    <div class="col-xs-6 col-md-6 col-sm-6">
-      <h1 class="display-2 inline-block">CALL</h1>
-      <table mat-table [dataSource]="callData" class="mat-elevation-z8">
+    <div class="col-xs-12 col-md-12 col-sm-12">
+      <h1 class="display-2 inline-block">Current OI Data</h1>
+      <table mat-table [dataSource]="dataSet" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="openInterestCall">
+          <th mat-header-cell *matHeaderCellDef> Open Interest Call</th>
+          <td mat-cell *matCellDef="let element"> {{element.openInterestCall}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="changeinOpenInterestCall">
+          <th mat-header-cell *matHeaderCellDef> Change Open Interest Call</th>
+          <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterestCall}} </td>
+        </ng-container>
+
         <!-- Position Column -->
         <ng-container matColumnDef="strikePrice">
           <th mat-header-cell *matHeaderCellDef> Strike Price </th>
           <td mat-cell *matCellDef="let element"> {{element.strikePrice}} </td>
         </ng-container>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="openInterest">
-          <th mat-header-cell *matHeaderCellDef> Open Interest </th>
-          <td mat-cell *matCellDef="let element"> {{element.openInterest}} </td>
-        </ng-container>
-
         <!-- Weight Column -->
-        <ng-container matColumnDef="changeinOpenInterest">
-          <th mat-header-cell *matHeaderCellDef> Change Open Interest </th>
-          <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterest}} </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;let element" [ngClass]="{ 'highlight': element.ATM === true }"></tr>
-      </table>
-    </div>
-
-    <div class="col-xs-6 col-md-6 col-sm-6">
-      <h1 class="display-2 inline-block">PUT</h1>
-      <table mat-table [dataSource]="putData" class="mat-elevation-z8">
-        <!-- Position Column -->
-        <ng-container matColumnDef="strikePrice">
-          <th mat-header-cell *matHeaderCellDef> Strike Price </th>
-          <td mat-cell *matCellDef="let element"> {{element.strikePrice}} </td>
+        <ng-container matColumnDef="changeinOpenInterestPut">
+          <th mat-header-cell *matHeaderCellDef> Change Open Interest Put</th>
+          <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterestPut}} </td>
         </ng-container>
 
         <!-- Name Column -->
-        <ng-container matColumnDef="openInterest">
-          <th mat-header-cell *matHeaderCellDef> Open Interest </th>
-          <td mat-cell *matCellDef="let element"> {{element.openInterest}} </td>
-        </ng-container>
-
-        <!-- Weight Column -->
-        <ng-container matColumnDef="changeinOpenInterest">
-          <th mat-header-cell *matHeaderCellDef> Change Open Interest </th>
-          <td mat-cell *matCellDef="let element"> {{element.changeinOpenInterest}} </td>
+        <ng-container matColumnDef="openInterestPut">
+          <th mat-header-cell *matHeaderCellDef> Open Interest Put</th>
+          <td mat-cell *matCellDef="let element"> {{element.openInterestPut}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
